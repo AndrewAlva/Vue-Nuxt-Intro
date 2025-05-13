@@ -1,16 +1,18 @@
 <template>
   <div>
-    <ThreeCanvas />
-    <button @click="animateCube" class="myButton absolute top-4 left-4 p-4 bg-black text-white">Animate</button>
+    <ThreeCanvas ref="threeRef" />
+    <button @click="triggerSpin" class="myButton absolute top-4 left-4 p-4 bg-black text-white">Animate</button>
   </div>
 </template>
 
-<script setup>
-const { $gsap } = useNuxtApp()
+<script setup lang="ts">
+  import { ref } from 'vue'
+  
+  const threeRef = ref<InstanceType<typeof defineComponent>>()
 
-const animateCube = () => {
-  $gsap.to('.box', { rotation: 360, duration: 2 })
-}
+  const triggerSpin = () => {
+    threeRef.value?.spinCube();
+  }
 </script>
 
 <style scoped>
