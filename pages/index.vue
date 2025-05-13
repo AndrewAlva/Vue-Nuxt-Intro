@@ -1,7 +1,7 @@
 <template>
   <div>
     <ThreeCanvas ref="threeRef" />
-    <button @click="triggerSpin" class="myButton absolute top-4 left-4 p-4 bg-black text-white">Animate</button>
+    <button @click="triggerSpin" class="myButton absolute top-4 left-4 p-4 bg-black text-white">Extra spin!</button>
   </div>
 </template>
 
