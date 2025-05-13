@@ -7,13 +7,29 @@ import { onMounted, ref } from 'vue'
 const canvas = ref<HTMLCanvasElement | null>(null)
 let cube: any // reference to the Three.js cube
 
+const width = ref(window.innerWidth)
+const height = ref(window.innerHeight)
+
+const updateSize = () => {
+	width.value = window.innerWidth
+	height.value = window.innerHeight
+}
+
 onMounted(() => {
+	window.addEventListener('resize', updateSize)
+
 	const { $three } = useNuxtApp()
 
 	const scene = new $three.Scene()
 	const camera = new $three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
 	const renderer = new $three.WebGLRenderer({ canvas: canvas.value! })
-	renderer.setSize(window.innerWidth, window.innerHeight)
+	renderer.setSize(width.value, height.value)
+
+	watch([width, height], ([w, h]) => {
+		renderer.setSize(w, h)
+		camera.aspect = w / h
+		camera.updateProjectionMatrix()
+	})
 
 	const geometry = new $three.BoxGeometry()
 	// const material = new $three.MeshBasicMaterial({ color: 0x00ff00 })
@@ -39,6 +55,10 @@ onMounted(() => {
 	}
 
 	animate()
+})
+
+onUnmounted(() => {
+	window.removeEventListener('resize', updateSize)
 })
 
 // 👇 This function will be triggered from outside
